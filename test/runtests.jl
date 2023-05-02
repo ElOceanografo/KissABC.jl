@@ -27,7 +27,7 @@ end
     @test push_p(Normal(), 1) /′ 1.0
     @test push_p(DiscreteUniform(), 1.0) /′ 1
     @test push_p(Factored(Normal(), DiscreteUniform()), (2, 1.0)) /′ (2.0, 1)
-    @test push_p(Product([Normal(), Normal()]), [2, 1]) /′ [2.0, 1.0]
+    @test push_p(product_distribution([Normal(), Normal()]), [2, 1]) /′ [2.0, 1.0]
 end
 
 @testset "Tiny Data, Approximate Bayesian Computation and the Socks of Karl Broman" begin
@@ -132,7 +132,7 @@ end
 
 @testset "Classical Mixture Model 0.1N+N" begin
     st(res) =
-        ((quantile(res, 0.1:0.1:0.9)-reverse(quantile(res, 0.1:0.1:0.9)))/2)[1+(end-1)÷2:end]
+        ((quantile(res.particles, 0.1:0.1:0.9)-reverse(quantile(res.particles, 0.1:0.1:0.9)))/2)[1+(end-1)÷2:end]
     st_n = [
         0.0,
         0.04680825481526908,
@@ -214,7 +214,7 @@ end
         progress = false,
     )
     @show res
-    @test quantile(D.lπ(res), 0.97) > -0.69
+    @test quantile(D.lπ(res).particles, 0.97) > -0.69
 end
 
 
